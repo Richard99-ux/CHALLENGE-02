@@ -41,7 +41,7 @@ const dataPenjualanNovel = [
 var TotalKeuntungan = dataPenjualanNovel.filter((item) =>
     item.namaProduk === 'Pulang - Pergi' || item.namaProduk === 'Selamat Tinggal' || item.namaProduk === 'Garis Waktu' || item.namaProduk === 'Laskar Pelangi'
 ).reduce((accumulator, item) => {
-    return accumulator + (item.hargaJual - item.hargaBeli) * (item.totalTerjual + item.sisaStok);
+    return accumulator + (item.hargaJual - item.hargaBeli) * item.totalTerjual;
 }, 0)
 
 
@@ -69,6 +69,7 @@ var rupiah2 = (number) =>{
 }
 
 
+var PersentaseKeuntungan = TotalKeuntungan / TotalModal * 100;
 
 var ProdukBukuTerlaris = dataPenjualanNovel.filter((item) => item.totalTerjual > 171).map(item => item.namaProduk);
 
@@ -78,14 +79,16 @@ var PenulisTerlaris = dataPenjualanNovel.filter((item) => item.totalTerjual > 17
 function hitungTotalPenjualan(dataPenjualan) {
     dataPenjualan1 = rupiah1(TotalKeuntungan);
     dataPenjualan2 = rupiah2(TotalModal);
-    dataPenjualan3 = ProdukBukuTerlaris;
-    dataPenjualan4 = PenulisTerlaris;
+    dataPenjualan3 = PersentaseKeuntungan.toFixed();
+    dataPenjualan4 = ProdukBukuTerlaris;
+    dataPenjualan5 = PenulisTerlaris;
 
     return `{
         totalKeuntungan: ${dataPenjualan1},
         totalModal: ${dataPenjualan2},
-        produkBukuTerlaris: ${dataPenjualan3},
-        penulisTerlaris: ${dataPenjualan4}
+        persentaseKeuntungan: ${dataPenjualan3}%,
+        produkBukuTerlaris: ${dataPenjualan4},
+        penulisTerlaris: ${dataPenjualan5}
     }`
 }
 
