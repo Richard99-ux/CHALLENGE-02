@@ -41,15 +41,33 @@ const dataPenjualanNovel = [
 var TotalKeuntungan = dataPenjualanNovel.filter((item) =>
     item.namaProduk === 'Pulang - Pergi' || item.namaProduk === 'Selamat Tinggal' || item.namaProduk === 'Garis Waktu' || item.namaProduk === 'Laskar Pelangi'
 ).reduce((accumulator, item) => {
-    return accumulator + (item.hargaJual-item.hargaBeli) * (item.totalTerjual+item.sisaStok);
+    return accumulator + (item.hargaJual - item.hargaBeli) * (item.totalTerjual + item.sisaStok);
 }, 0)
 
 
-var TotalModal = dataPenjualanNovel.filter((item) =>
+var rupiah1 = (number) =>{
+    return new Intl.NumberFormat('id-ID', {
+        style: 'currency',
+        currency: 'IDR'
+    }).format(number)
+}
+
+
+var TotalModal = dataPenjualanNovel.filter((item) => 
     item.namaProduk === 'Pulang - Pergi' || item.namaProduk === 'Selamat Tinggal' || item.namaProduk === 'Garis Waktu' || item.namaProduk === 'Laskar Pelangi'
 ).reduce((accumulator, item) => {
-    return accumulator + (item.hargaBeli) * (item.totalTerjual+item.sisaStok);
+    return accumulator + item.hargaBeli * (item.totalTerjual + item.sisaStok);
 }, 0)
+
+
+
+var rupiah2 = (number) =>{
+    return new Intl.NumberFormat('id-ID', {
+        style: 'currency',
+        currency: 'IDR'
+    }).format(number)
+}
+
 
 
 var ProdukBukuTerlaris = dataPenjualanNovel.filter((item) => item.totalTerjual > 171).map(item => item.namaProduk);
@@ -58,17 +76,18 @@ var PenulisTerlaris = dataPenjualanNovel.filter((item) => item.totalTerjual > 17
 
 
 function hitungTotalPenjualan(dataPenjualan) {
-    dataPenjualan1 = TotalKeuntungan;
-    dataPenjualan2 = TotalModal;
+    dataPenjualan1 = rupiah1(TotalKeuntungan);
+    dataPenjualan2 = rupiah2(TotalModal);
     dataPenjualan3 = ProdukBukuTerlaris;
     dataPenjualan4 = PenulisTerlaris;
 
     return `{
-        totalKeuntungan: Rp. ${dataPenjualan1},
-        totalModal: Rp. ${dataPenjualan2},
+        totalKeuntungan: ${dataPenjualan1},
+        totalModal: ${dataPenjualan2},
         produkBukuTerlaris: ${dataPenjualan3},
         penulisTerlaris: ${dataPenjualan4}
     }`
 }
+
 
 console.log(hitungTotalPenjualan(dataPenjualanNovel))
